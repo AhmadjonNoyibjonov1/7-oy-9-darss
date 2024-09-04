@@ -5,17 +5,17 @@ import Features from "../components/Features";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 
-const Home = () => {
+const Home = ({ searchQuery, setSearchQuery }) => {
   return (
     <div className="flex container mx-auto">
       <div className="">
-        <Nav></Nav>
+        <Nav />
       </div>
       <div className="h-[100vh]">
-        <Header />
+        <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <div className="overflow-auto h-[90vh]">
           <Hero />
-          <Features />
+          <Features searchQuery={searchQuery} />
           <Footer />
         </div>
       </div>
