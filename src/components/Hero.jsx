@@ -1,6 +1,7 @@
 import React from "react";
 
 function Hero() {
+  
   return (
     <div className="flex flex-col gap-6">
       <h2 className="mt-[34px] ml-9 w-[122px] h-10 font-normal text-3xl ">

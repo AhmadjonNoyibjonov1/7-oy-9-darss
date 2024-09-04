@@ -8,16 +8,17 @@ import Nav from "../components/Nav";
 const Home = () => {
   return (
     <div className="flex container mx-auto">
-      <div>
+      <div className="">
         <Nav></Nav>
       </div>
-      <div>
-        <Header/>
-        <Hero />
-        <Features />
-        <Footer />
+      <div className="h-[100vh]">
+        <Header />
+        <div className="overflow-auto h-[90vh]">
+          <Hero />
+          <Features />
+          <Footer />
+        </div>
       </div>
-      
     </div>
   );
 };
