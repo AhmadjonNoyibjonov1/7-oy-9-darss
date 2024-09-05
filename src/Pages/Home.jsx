@@ -14,6 +14,7 @@ const Home = ({ searchQuery, setSearchQuery }) => {
       <div className="h-[100vh]">
         <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <div className="overflow-auto h-[90vh]">
+          
           <Hero />
           <Features searchQuery={searchQuery} />
           <Footer />

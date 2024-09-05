@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import "./App.css"
 import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import Save from "./Pages/Save";
@@ -22,7 +23,7 @@ function App() {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <Routes>
         <Route path="/" element={<Home searchQuery={searchQuery} setSearchQuery={setSearchQuery} />} />
-        <Route path="/save" element={<Save />} />
+        <Route path="/save" element={<Save/>} />
       </Routes>
     </ThemeContext.Provider>
   );

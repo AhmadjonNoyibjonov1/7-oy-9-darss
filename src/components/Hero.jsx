@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Hero() {
   const [movies, setMovies] = useState([]);
+  const [bookmarked, setBookmarked] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
       setLoading(true);
       try {
-       
         const response = await fetch('https://api.kinopoisk.dev/v1.4/movie?rating.imdb=8-10&limit=100', {
           headers: {
             'X-API-KEY': 'HAYC7RP-PWRMQ3X-GX54BNM-7HXDFAF'
@@ -19,6 +21,11 @@ function Hero() {
         }
         const data = await response.json();
         setMovies(data.docs.slice(10));
+
+        // LocalStorage'dan bookmark qilinganlarni o'qiymiz
+        const savedBookmarks = JSON.parse(localStorage.getItem('bookmarkedMovies')) || [];
+        setBookmarked(savedBookmarks);
+
       } catch (error) {
         console.error('Error fetching movies:', error);
       } finally {
@@ -28,6 +35,23 @@ function Hero() {
 
     fetchMovies();
   }, []);
+
+  // Bookmarkni toggle qiladigan funksiya
+  const handleBookmark = (movie) => {
+    const updatedBookmarks = bookmarked.some(item => item.id === movie.id)
+      ? bookmarked.filter(item => item.id !== movie.id) // Agar bor bo'lsa o'chiradi
+      : [...bookmarked, movie]; // Agar yo'q bo'lsa qo'shadi
+
+    setBookmarked(updatedBookmarks);
+    localStorage.setItem('bookmarkedMovies', JSON.stringify(updatedBookmarks));
+
+    // Toastify bilan xabar ko'rsatish
+    if (bookmarked.some(item => item.id === movie.id)) {
+      toast.error('Bookmark removed');
+    } else {
+      toast.success('Movie bookmarked');
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -47,8 +71,11 @@ function Hero() {
                   className="w-full h-full object-cover opacity-70"
                   alt={movie.name || "Movie"}
                 />
-                <div className="absolute top-2 right-2 bg-gray-700 p-2 rounded-full">
-                  <i className="fa-regular fa-bookmark text-white"></i>
+                <div
+                  className={`absolute top-2 right-2 bg-gray-700 p-2 rounded-full cursor-pointer ${bookmarked.some(item => item.id === movie.id) ? 'bg-yellow-500' : ''}`}
+                  onClick={() => handleBookmark(movie)}
+                >
+                  <i className={`fa-regular fa-bookmark text-white`}></i>
                 </div>
                 <div className="absolute bottom-4 left-4 text-white">
                   <p className="text-sm">{movie.year} • Movie • PG</p>
@@ -59,6 +86,9 @@ function Hero() {
           ))
         )}
       </div>
+
+      {/* Toastify konteyneri */}
+      <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
 }
